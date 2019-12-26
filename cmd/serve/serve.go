@@ -1,18 +1,19 @@
 package serve
 
 import (
-	rootOpts "github.com/grindlemire/clean-cobra/cmd/opts"
-	"github.com/grindlemire/clean-cobra/cmd/serve/opts"
 	"github.com/grindlemire/log"
 	"github.com/spf13/cobra"
 )
 
+// Options for the serve cli
+type Options struct {
+	Port int
+}
+
 // CreateServeCmd generates the configuration for the serve subcommand.
 // It can be attached to any upstream cobra command.
-func CreateServeCmd(globalOpts rootOpts.Options) *cobra.Command {
-	opts := opts.Options{
-		Options: globalOpts,
-	}
+func CreateServeCmd() *cobra.Command {
+	opts := Options{}
 
 	cmd := &cobra.Command{
 		Use:   "serve",
@@ -26,12 +27,12 @@ func CreateServeCmd(globalOpts rootOpts.Options) *cobra.Command {
 	return cmd
 }
 
-func attachOpts(cmd *cobra.Command, options *opts.Options) {
+func attachOpts(cmd *cobra.Command, options *Options) {
 	flags := cmd.Flags()
 	flags.IntVarP(&options.Port, "port", "p", 10000, "the port to serve on")
 }
 
-func run(options opts.Options) error {
+func run(options Options) error {
 	log.Infof("running query command with %+v options", options)
 	return nil
 }
